@@ -99,7 +99,8 @@ func startServer(c *cli.Context) error {
 	logger.GetLogger().Infow("server started, press Ctrl+C to stop")
 
 	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+	// Also handle SIGHUP so the process can be cleanly stopped by some process managers
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	<-sigChan
 
 	logger.GetLogger().Infow("shutting down server")
