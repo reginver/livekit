@@ -85,7 +85,8 @@ func startServer(c *cli.Context) error {
 		logger.GetLogger().Infow("starting in development mode")
 	}
 
-	_ = livekit.NodeID(fmt.Sprintf("nd_%s", newNodeID()))
+	nodeID := livekit.NodeID(fmt.Sprintf("nd_%s", newNodeID()))
+	logger.GetLogger().Infow("generated node ID", "nodeID", nodeID)
 
 	s, err := server.NewLiveKitServer(conf)
 	if err != nil {
