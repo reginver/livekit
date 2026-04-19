@@ -96,10 +96,13 @@ func startServer(c *cli.Context) error {
 		return fmt.Errorf("failed to start server: %w", err)
 	}
 
+	logger.GetLogger().Infow("server started, press Ctrl+C to stop")
+
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 	<-sigChan
 
+	logger.GetLogger().Infow("shutting down server")
 	s.Stop(false)
 	return nil
 }
