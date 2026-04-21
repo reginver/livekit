@@ -96,7 +96,8 @@ func (r *LocalRouter) SetNodeForRoom(_ context.Context, roomName livekit.RoomNam
 }
 
 // ClearRoomState removes routing state for a room.
-// Note: also logs at Info level so it's easier to trace room lifecycle in local dev.
+// Note: also logs at Info level so it's easier to trace room lifecycle in logs.
+// TODO(me): consider adding a callback hook here so other components can react to room cleanup
 func (r *LocalRouter) ClearRoomState(_ context.Context, roomName livekit.RoomName) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -106,7 +107,7 @@ func (r *LocalRouter) ClearRoomState(_ context.Context, roomName livekit.RoomNam
 	return nil
 }
 
-// Stop shuts down the local router (no-op for local router)
+// Stop shuts down the router (no-op for local router)
 func (r *LocalRouter) Stop() {
 	logger.Infow("stopping local router", "nodeID", r.nodeID)
 }
