@@ -89,8 +89,11 @@ func DefaultConfig() *Config {
 			UseExternalIP: false,
 		},
 		Room: RoomConfig{
-			AutoCreate:   true,
-			EmptyTimeout: 300,
+			AutoCreate: true,
+			// Increased from 300 to 600 so dev rooms don't time out too quickly
+			// during testing sessions.
+			EmptyTimeout:    600,
+			MaxParticipants: 50,
 		},
 		Audio: AudioConfig{
 			ActiveLevel:    35,
@@ -104,23 +107,4 @@ func DefaultConfig() *Config {
 	}
 }
 
-// NewConfig loads configuration from a YAML file path.
-// If path is empty, it returns the default configuration.
-func NewConfig(configFile string) (*Config, error) {
-	conf := DefaultConfig()
-	if configFile == "" {
-		return conf, nil
-	}
-
-	data, err := os.ReadFile(configFile)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := yaml.Unmarshal(data, conf); err != nil {
-		return nil, err
-	}
-
-	logger.Infow("loaded configuration", "file", configFile)
-	return conf, nil
-}
+// Ne
